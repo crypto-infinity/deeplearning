@@ -1,0 +1,106 @@
+---
+title: "MIT Exercise N.1"
+---
+
+# Variables definition
+```{r}
+
+fspath <- "ex1_MIT/dataset.csv"
+vsep <- ","
+vdec <- "."
+indvariable <- "passed"
+activationf <- "Tahn"
+
+```
+
+# Library Definition
+```{r}
+
+dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)
+.libPaths(Sys.getenv("R_LIBS_USER"))  # add to the path
+
+# End
+```
+
+# Prerequisites install and selection
+```{r}
+
+install.packages("caTools", repos = "https://cloud.r-project.org")
+install.packages("pandoc", repos = "https://cloud.r-project.org")
+install.packages("rmarkdown", repos = "https://cloud.r-project.org")
+install.packages("h2o", repos = "https://cloud.r-project.org")
+
+library(caTools)
+library(h2o)
+library(pandoc)
+library(rmarkdown)
+
+# End
+```
+
+# Importing the dataset
+```{r}
+
+csv <- read.csv("~/cloudfiles/code/Users/g.scorpaniti/notebook/" + fspath,
+                header = TRUE, sep = vsep, quote = "\"",
+                dec = vdec, fill = TRUE, comment.char = "")
+
+dataset <- csv     #[2:ncol(csv)] #Modify dataset as needed
+
+# End
+```
+
+# Splitting the dataset into the Training set and Test set - MODIFY with indvariable
+```{r}
+
+split <- sample.split(dataset$passed, SplitRatio = 0.8)
+training_set <- subset(dataset, split == TRUE)
+test_set <- subset(dataset, split == FALSE)
+
+# End
+```
+
+# Apply Feature Scaling
+```{r}
+
+training_set <- scale(training_set)
+test_set <- scale(test_set)
+
+# End
+```
+
+# ANN building and fitting to the Training set - H2O - MODIFY
+```{r} 
+
+h2o.init(nthreads = -1)
+model <- h2o.deeplearning(y = indvariable,
+                          training_frame = as.h2o(training_set),
+                          activation = "Tanh",
+                          hidden = c(200, 200),
+                          epochs = 10,
+                          train_samples_per_iteration = -2)
+
+#End
+```
+
+# ANN prediction on Test Set
+```{r} 
+
+y_pred <- h2o.predict(model, newdata = as.h2o(test_set))
+y_pred <- (y_pred > 0.5)
+y_pred <- as.vector(y_pred)
+
+cm <- table(test_set, y_pred)
+
+#End
+```
+
+# Artifacts save and model return
+```{r} 
+
+model_path <- h2o.saveModel(object = model,
+                            path = "~/cloudfiles/code/Users/g.scorpaniti/notebook/model/", # nolint
+                            force = TRUE)
+
+return(model)
+```
