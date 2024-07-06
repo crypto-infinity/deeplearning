@@ -1,0 +1,95 @@
+---
+title: "MIT Exercise N.1"
+---
+
+# 1 Library Definition
+```{r}
+
+dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)
+.libPaths(Sys.getenv("R_LIBS_USER"))  # add to the path
+
+# End
+```
+
+# 2 Prerequisites install and selection
+```{r}
+
+install.packages("caTools", repos = "https://cloud.r-project.org")
+install.packages("pandoc", repos = "https://cloud.r-project.org")
+install.packages("rmarkdown", repos = "https://cloud.r-project.org")
+install.packages("h2o", repos = "https://cloud.r-project.org")
+
+library(caTools)
+library(h2o)
+library(pandoc)
+library(rmarkdown)
+library(readr)
+library(knitr)
+
+h2o.init(nthreads = -1)
+
+# End
+```
+
+# 3 Importing the dataset
+```{r}
+
+houses <- "https://raw.githubusercontent.com/timothypesi/Data-Sets-For-Machine-Learning-/main/california_housing_train.csv" # nolint: line_length_linter.
+
+csv <- read.csv(houses,
+                header = TRUE, sep = ",", quote = "\"",
+                dec = ".", fill = TRUE, comment.char = "")
+
+dataset <- csv
+
+# End
+```
+
+# 4 Splitting the dataset into the Training set and Test set - MODIFY with indvariable
+```{r}
+
+split <- sample.split(dataset$median_house_value, SplitRatio = 0.8)
+training_set <- subset(dataset, split == TRUE)
+test_set <- subset(dataset, split == FALSE)
+
+# End
+```
+
+# 5 ANN building and fitting to the Training set
+```{r} 
+
+#automatically scales training set
+model <- h2o.deeplearning(y = "median_house_value",
+                          training_frame = as.h2o(training_set),
+                          validation_frame = as.h2o(test_set),
+                          activation = "Tanh",
+                          hidden = c(500, 500),
+                          epochs = 10000,
+                          train_samples_per_iteration = -2,
+                          model_id = "ex2")
+
+#End
+```
+
+# 6 ANN prediction on Test Set
+```{r} 
+
+y_pred <- h2o.predict(model, newdata = as.h2o(test_set))
+y_pred <- as.vector(y_pred)
+
+test_set$predicted_median_house_value <- y_pred
+
+#End
+```
+
+# Artifacts save and model return
+```{r} 
+
+model_path <- h2o.saveModel(object = model,
+                            path = "Users/g.scorpaniti/notebook/ex2_realdata/artifacts/model", # nolint
+                            force = TRUE)
+
+write.csv(test_set,
+         "Users/g.scorpaniti/notebook/ex2_realdata/artifacts/test_set.csv",  # nolint
+         row.names = FALSE)
+```
