@@ -8,8 +8,8 @@ def main():
         "microsoft/Phi-3-mini-128k-instruct",
         device_map="cuda",
         torch_dtype="auto",
-        trust_remote_code=True
-        # attn_implementation="flash_attention_2"
+        trust_remote_code=True,
+        attn_implementation="eager"
     )
 
     tokenizer = AutoTokenizer.from_pretrained("microsoft/Phi-3-mini-128k-instruct")
