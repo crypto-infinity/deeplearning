@@ -1,0 +1,230 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "source": [
+        "<strong>Dependencies installation</strong>"
+      ],
+      "metadata": {}
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "%pip install pandas\n",
+        "%pip install numpy\n",
+        "%pip install tensorflow\n",
+        "%pip install scikit-learn\n",
+        "%pip install scikit-metrics"
+      ],
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "Requirement already satisfied: pandas in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (2.2.2)\nRequirement already satisfied: numpy>=1.22.4 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from pandas) (1.23.5)\nRequirement already satisfied: python-dateutil>=2.8.2 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from pandas) (2.9.0)\nRequirement already satisfied: pytz>=2020.1 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from pandas) (2024.1)\nRequirement already satisfied: tzdata>=2022.7 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from pandas) (2024.1)\nRequirement already satisfied: six>=1.5 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from python-dateutil>=2.8.2->pandas) (1.16.0)\nNote: you may need to restart the kernel to use updated packages.\nRequirement already satisfied: numpy in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (1.23.5)\nNote: you may need to restart the kernel to use updated packages.\nRequirement already satisfied: tensorflow in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (2.15.0)\nRequirement already satisfied: absl-py>=1.0.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (2.1.0)\nRequirement already satisfied: astunparse>=1.6.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (1.6.3)\nRequirement already satisfied: flatbuffers>=23.5.26 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (24.3.25)\nRequirement already satisfied: gast!=0.5.0,!=0.5.1,!=0.5.2,>=0.2.1 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (0.5.4)\nRequirement already satisfied: google-pasta>=0.1.1 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (0.2.0)\nRequirement already satisfied: h5py>=2.9.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (3.11.0)\nRequirement already satisfied: libclang>=13.0.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (18.1.1)\nRequirement already satisfied: ml-dtypes~=0.2.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (0.2.0)\nRequirement already satisfied: numpy<2.0.0,>=1.23.5 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (1.23.5)\nRequirement already satisfied: opt-einsum>=2.3.2 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (3.3.0)\nRequirement already satisfied: packaging in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (24.0)\nRequirement already satisfied: protobuf!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,<5.0.0dev,>=3.20.3 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (4.25.3)\nRequirement already satisfied: setuptools in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (68.0.0)\nRequirement already satisfied: six>=1.12.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (1.16.0)\nRequirement already satisfied: termcolor>=1.1.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (2.4.0)\nRequirement already satisfied: typing-extensions>=3.6.6 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (4.12.2)\nRequirement already satisfied: wrapt<1.15,>=1.11.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (1.14.1)\nRequirement already satisfied: tensorflow-io-gcs-filesystem>=0.23.1 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (0.37.0)\nRequirement already satisfied: grpcio<2.0,>=1.24.3 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (1.64.1)\nRequirement already satisfied: tensorboard<2.16,>=2.15 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (2.15.2)\nRequirement already satisfied: tensorflow-estimator<2.16,>=2.15.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (2.15.0)\nRequirement already satisfied: keras<2.16,>=2.15.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorflow) (2.15.0)\nRequirement already satisfied: wheel<1.0,>=0.23.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from astunparse>=1.6.0->tensorflow) (0.41.2)\nRequirement already satisfied: google-auth<3,>=1.6.3 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorboard<2.16,>=2.15->tensorflow) (2.30.0)\nRequirement already satisfied: google-auth-oauthlib<2,>=0.5 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorboard<2.16,>=2.15->tensorflow) (1.2.0)\nRequirement already satisfied: markdown>=2.6.8 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorboard<2.16,>=2.15->tensorflow) (3.6)\nRequirement already satisfied: requests<3,>=2.21.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorboard<2.16,>=2.15->tensorflow) (2.32.3)\nRequirement already satisfied: tensorboard-data-server<0.8.0,>=0.7.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorboard<2.16,>=2.15->tensorflow) (0.7.2)\nRequirement already satisfied: werkzeug>=1.0.1 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from tensorboard<2.16,>=2.15->tensorflow) (3.0.3)\nRequirement already satisfied: cachetools<6.0,>=2.0.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from google-auth<3,>=1.6.3->tensorboard<2.16,>=2.15->tensorflow) (5.3.3)\nRequirement already satisfied: pyasn1-modules>=0.2.1 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from google-auth<3,>=1.6.3->tensorboard<2.16,>=2.15->tensorflow) (0.4.0)\nRequirement already satisfied: rsa<5,>=3.1.4 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from google-auth<3,>=1.6.3->tensorboard<2.16,>=2.15->tensorflow) (4.9)\nRequirement already satisfied: requests-oauthlib>=0.7.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from google-auth-oauthlib<2,>=0.5->tensorboard<2.16,>=2.15->tensorflow) (2.0.0)\nRequirement already satisfied: importlib-metadata>=4.4 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from markdown>=2.6.8->tensorboard<2.16,>=2.15->tensorflow) (7.1.0)\nRequirement already satisfied: charset-normalizer<4,>=2 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from requests<3,>=2.21.0->tensorboard<2.16,>=2.15->tensorflow) (3.3.2)\nRequirement already satisfied: idna<4,>=2.5 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from requests<3,>=2.21.0->tensorboard<2.16,>=2.15->tensorflow) (3.7)\nRequirement already satisfied: urllib3<3,>=1.21.1 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from requests<3,>=2.21.0->tensorboard<2.16,>=2.15->tensorflow) (2.2.1)\nRequirement already satisfied: certifi>=2017.4.17 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from requests<3,>=2.21.0->tensorboard<2.16,>=2.15->tensorflow) (2024.6.2)\nRequirement already satisfied: MarkupSafe>=2.1.1 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from werkzeug>=1.0.1->tensorboard<2.16,>=2.15->tensorflow) (2.1.5)\nRequirement already satisfied: zipp>=0.5 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from importlib-metadata>=4.4->markdown>=2.6.8->tensorboard<2.16,>=2.15->tensorflow) (3.19.2)\nRequirement already satisfied: pyasn1<0.7.0,>=0.4.6 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from pyasn1-modules>=0.2.1->google-auth<3,>=1.6.3->tensorboard<2.16,>=2.15->tensorflow) (0.6.0)\nRequirement already satisfied: oauthlib>=3.0.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from requests-oauthlib>=0.7.0->google-auth-oauthlib<2,>=0.5->tensorboard<2.16,>=2.15->tensorflow) (3.2.2)\nNote: you may need to restart the kernel to use updated packages.\nRequirement already satisfied: scikit-learn in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (1.5.1)\nRequirement already satisfied: numpy>=1.19.5 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from scikit-learn) (1.23.5)\nRequirement already satisfied: scipy>=1.6.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from scikit-learn) (1.13.1)\nRequirement already satisfied: joblib>=1.2.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from scikit-learn) (1.4.2)\nRequirement already satisfied: threadpoolctl>=3.1.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from scikit-learn) (3.5.0)\nNote: you may need to restart the kernel to use updated packages.\nCollecting scikit-metrics\n  Downloading scikit-metrics-0.1.0.tar.gz (3.9 kB)\n  Preparing metadata (setup.py) ... \u001b[?25l-\b \bdone\n\u001b[?25hRequirement already satisfied: scikit-learn in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from scikit-metrics) (1.5.1)\nRequirement already satisfied: numpy>=1.19.5 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from scikit-learn->scikit-metrics) (1.23.5)\nRequirement already satisfied: scipy>=1.6.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from scikit-learn->scikit-metrics) (1.13.1)\nRequirement already satisfied: joblib>=1.2.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from scikit-learn->scikit-metrics) (1.4.2)\nRequirement already satisfied: threadpoolctl>=3.1.0 in /anaconda/envs/azureml_py38_PT_TF/lib/python3.9/site-packages (from scikit-learn->scikit-metrics) (3.5.0)\nBuilding wheels for collected packages: scikit-metrics\n  Building wheel for scikit-metrics (setup.py) ... \u001b[?25l-\b \b\\\b \bdone\n\u001b[?25h  Created wheel for scikit-metrics: filename=scikit_metrics-0.1.0-py3-none-any.whl size=4394 sha256=2dd1b953a600ab8d0697d80d5f4a8818b50fe5ecc6016fa46f68c2a8d23a9e57\n  Stored in directory: /home/azureuser/.cache/pip/wheels/13/3b/a7/112bfc0158119c9b9629cef6b131dee5d5482f0203f35f80a0\nSuccessfully built scikit-metrics\nInstalling collected packages: scikit-metrics\nSuccessfully installed scikit-metrics-0.1.0\nNote: you may need to restart the kernel to use updated packages.\n"
+        }
+      ],
+      "execution_count": 1,
+      "metadata": {}
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "<strong>Dependencies import</strong>"
+      ],
+      "metadata": {}
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import os\n",
+        "import pandas as pd\n",
+        "import numpy as np\n",
+        "import tensorflow as tf\n",
+        "\n",
+        "from sklearn.model_selection import train_test_split\n",
+        "from sklearn.metrics import r2_score, mean_squared_error\n",
+        "from tensorflow.keras import layers, models # type: ignore"
+      ],
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": "2024-07-29 12:22:39.788577: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered\n2024-07-29 12:22:39.788662: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered\n2024-07-29 12:22:40.412856: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered\n2024-07-29 12:22:41.647026: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.\nTo enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.\n2024-07-29 12:22:45.120798: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT\n"
+        }
+      ],
+      "execution_count": 2,
+      "metadata": {
+        "gather": {
+          "logged": 1722255768374
+        }
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Importazione del dataset\n",
+        "\n",
+        "dataset_url = \"https://raw.githubusercontent.com/timothypesi/Data-Sets-For-Machine-Learning-/main/california_housing_train.csv\"\n",
+        "df = pd.read_csv(dataset_url)"
+      ],
+      "outputs": [],
+      "execution_count": 3,
+      "metadata": {}
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Suddivisione del dataset in training set e test set\n",
+        "\n",
+        "train_df, test_df = train_test_split(df, test_size=0.2, random_state=42)"
+      ],
+      "outputs": [],
+      "execution_count": 4,
+      "metadata": {}
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Preparazione dei dati per il modello TensorFlow\n",
+        "\n",
+        "train_labels = train_df.pop('median_house_value')\n",
+        "test_labels = test_df.pop('median_house_value')"
+      ],
+      "outputs": [],
+      "execution_count": 5,
+      "metadata": {}
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Normalizzazione dei dati\n",
+        "\n",
+        "normalizer = tf.keras.layers.Normalization(axis=-1)\n",
+        "normalizer.adapt(np.array(train_df))"
+      ],
+      "outputs": [],
+      "execution_count": null,
+      "metadata": {}
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Costruzione del modello ANN con TensorFlow\n",
+        "\n",
+        "model = models.Sequential([\n",
+        "    normalizer,\n",
+        "    layers.Dense(200, activation='relu'),\n",
+        "    layers.Dense(200, activation='relu'),\n",
+        "    layers.Dense(1)\n",
+        "])\n",
+        "\n",
+        "model.compile(optimizer='adam', loss='mean_squared_error')\n",
+        "\n",
+        "# Addestramento del modello\n",
+        "model.fit(train_df, train_labels, epochs=100, validation_split=0.2)"
+      ],
+      "outputs": [],
+      "execution_count": null,
+      "metadata": {}
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Valutazione del modello sul test set\n",
+        "\n",
+        "loss = model.evaluate(test_df, test_labels)"
+      ],
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "107/107 [==============================] - 0s 1ms/step - loss: 3973798656.0000\n"
+        }
+      ],
+      "execution_count": 8,
+      "metadata": {}
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Predizione dei valori sul test set\n",
+        "\n",
+        "test_predictions = model.predict(test_df).flatten()"
+      ],
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "107/107 [==============================] - 0s 897us/step\n"
+        }
+      ],
+      "execution_count": 9,
+      "metadata": {}
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Aggiunta delle predizioni al test set\n",
+        "\n",
+        "test_df['predicted_median_house_value'] = test_predictions"
+      ],
+      "outputs": [],
+      "execution_count": 10,
+      "metadata": {}
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Salvataggio del modello e dei risultati\n",
+        "\n",
+        "model.save(\"Users/g.scorpaniti/notebook/ex4_housing_python/artifacts/model/model.keras\")\n",
+        "test_df.to_csv(\"Users/g.scorpaniti/notebook/ex4_housing_python/artifacts/test_set.csv\", index=False)"
+      ],
+      "outputs": [],
+      "execution_count": 11,
+      "metadata": {}
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Calcolo degli indicatori R2 e MSA\n",
+        "\n",
+        "r2 = r2_score(test_labels, test_predictions)\n",
+        "msa = mean_squared_error(test_labels, test_predictions)\n",
+        "\n",
+        "print(f\"R2 Score: {r2:.4f}\")\n",
+        "print(f\"Mean Squared Error: {msa:.4f}\")"
+      ],
+      "outputs": [],
+      "execution_count": null,
+      "metadata": {}
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "python38-azureml-pt-tf",
+      "language": "python",
+      "display_name": "Python 3.8 - Pytorch and Tensorflow"
+    },
+    "language_info": {
+      "name": "python",
+      "version": "3.9.19",
+      "mimetype": "text/x-python",
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "pygments_lexer": "ipython3",
+      "nbconvert_exporter": "python",
+      "file_extension": ".py"
+    },
+    "kernel_info": {
+      "name": "python38-azureml-pt-tf"
+    },
+    "nteract": {
+      "version": "nteract-front-end@1.0.0"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 2
+}

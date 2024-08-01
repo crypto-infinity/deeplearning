@@ -1,0 +1,15 @@
+Modello e Descrizione:
+Il modello è denominato “ex2”.
+La descrizione indica che le metriche sono state calcolate sul set di validazione completo.
+Metriche di Valutazione:
+MSE (Mean Squared Error): Questa metrica misura la media dei quadrati degli errori tra i valori predetti e quelli osservati. Un valore più basso indica una migliore performance.
+RMSE (Root Mean Squared Error): È la radice quadrata dell’MSE. Anche qui, un valore inferiore è preferibile.
+R2 (Coefficient of Determination): Questo valore varia da 0 a 1 e rappresenta quanto bene il modello si adatta ai dati. Un valore più vicino a 1 indica una migliore adattabilità.
+MAE (Mean Absolute Error): Misura la media degli errori assoluti tra le previsioni e i valori osservati. Anche qui, un valore inferiore è preferibile.
+RMSLE (Root Mean Squared Logarithmic Error): È simile all’RMSE, ma calcolato sui logaritmi dei valori. È utile quando i dati hanno una distribuzione log-normale.
+Mean Residual Deviance: Questo è specifico per modelli di regressione. Rappresenta la devianza media dei residui.
+Loglikelihood, AIC: Sembra che questi valori siano NaN (non disponibili). Potrebbe essere dovuto a problemi specifici del modello o dei dati.
+Altre Informazioni:
+Il numero di osservazioni (nobs) nel set di validazione è 3235.
+La colonna “custom_metric_name” sembra non avere un nome specifico.
+Il valore della “custom_metric_value” è 0.
